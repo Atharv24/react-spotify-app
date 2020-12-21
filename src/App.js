@@ -6,18 +6,18 @@ const base64 = require("base-64");
 const artistID = "22bE4uQ6baNwSHPVcDxLCe";
 
 const clientID = "377d14317ba44fd481f014dc81e2bcf8";
-const secretID = "3582e78a89be40a6a31ec7bad5383cd5";
+const secretID = process.env.REACT_APP_SECRET_ID;
 const encodedID = base64.encode(clientID + ":" + secretID);
 
-const refresh_token =
-  "AQDssNsrpoYadApmgNH-9KT0ckREt7kUF81CEXotT8rr-ene-cEyrO9yNbiEcYTV1Ksf7w2zut-DWmnpmGyBRgQFqPYJ6QMCg25Ut6m0U7Liyx6PmMXHFPcR8NVU8TFGIOw";
+const refresh_token = process.env.REACT_APP_REFRESH_TOKEN;
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       albums: [],
-      access_token: "",
+      // access_token:
+      // "BQD_hxVA1_qtfJ-1c_D_9neySPJYhxUu0u4YY1wTGO6eLhigXMuxhHCWxwgcwfts6fNtus8rLbTakNObiRWWEs3vgpGsF1kzHO9WgVP4_eSZ8YFiKqhihLbpvUATiNxMtbPG2sYS_niOQ1I9b4zkAuX3b3dSda45wCq0pwbBUw",
     };
   }
 
@@ -33,19 +33,17 @@ export default class App extends React.Component {
       }),
     })
       .then((res) => {
-        if (res.ok) {
-          return res.json();
+        if (!res.ok) {
+          throw Error("Access Token Expired");
         }
-        throw Error();
+        return res.json();
       })
       .then((result) => this.setAlbums(result.items))
-      .catch(() => {
-        this.refreshToken();
-      });
+      .catch(() => this.refreshToken());
   }
 
   refreshToken() {
-    let details = {
+    const details = {
       grant_type: "refresh_token",
       refresh_token: refresh_token,
     };
@@ -67,7 +65,9 @@ export default class App extends React.Component {
       body: formBody,
     })
       .then((res) => res.json())
-      .then((res) => this.setState({ access_token: res.access_token }))
+      .then((res) => {
+        this.setState({ access_token: res.access_token });
+      })
       .then(() => this.getAlbumData());
   }
 
