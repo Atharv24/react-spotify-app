@@ -1,6 +1,11 @@
 import React from "react";
-import { Container, Row } from "react-bootstrap";
 import AlbumCards from "./components/albumCards";
+
+import logo from "./resources/rolling-stones-logo-text.png";
+import background from "./resources/bandCover.jpg";
+import TopBar, { Footer } from "./components/navbars";
+import { Container } from "react-bootstrap";
+
 const base64 = require("base-64");
 
 const artistID = "22bE4uQ6baNwSHPVcDxLCe";
@@ -16,8 +21,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       albums: [],
-      // access_token:
-      // "BQD_hxVA1_qtfJ-1c_D_9neySPJYhxUu0u4YY1wTGO6eLhigXMuxhHCWxwgcwfts6fNtus8rLbTakNObiRWWEs3vgpGsF1kzHO9WgVP4_eSZ8YFiKqhihLbpvUATiNxMtbPG2sYS_niOQ1I9b4zkAuX3b3dSda45wCq0pwbBUw",
+      access_token:
+        "BQD_hxVA1_qtfJ-1c_D_9neySPJYhxUu0u4YY1wTGO6eLhigXMuxhHCWxwgcwfts6fNtus8rLbTakNObiRWWEs3vgpGsF1kzHO9WgVP4_eSZ8YFiKqhihLbpvUATiNxMtbPG2sYS_niOQ1I9b4zkAuX3b3dSda45wCq0pwbBUw",
     };
   }
 
@@ -84,10 +89,19 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <Container fluid style={{ padding: "1rem" }}>
-        <Row className="flex-nowrap overflow-auto">
-          <AlbumCards albums={this.state.albums} />
-        </Row>
+      <Container
+        fluid
+        style={{
+          backgroundImage: `url(${background})`,
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          padding: 0,
+        }}
+      >
+        <TopBar logo={logo} />
+        <AlbumCards albums={this.state.albums} />
+        <Footer text="Made by Abhishek" />
       </Container>
     );
   }
