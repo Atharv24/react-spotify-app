@@ -11,7 +11,7 @@ export default function TopBar(props) {
         background: "linear-gradient(black, transparent)",
       }}
     >
-      <Navbar.Brand href="#">
+      <Navbar.Brand href="#" style={{ margin: 0 }}>
         <img src={logo} width="80rem" alt="logo" />
       </Navbar.Brand>
     </Navbar>
